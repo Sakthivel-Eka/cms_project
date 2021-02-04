@@ -1,0 +1,373 @@
+API Document for CMS Application
+
+
+1. 
+User API for Create/List of PROFILES:
+
+endpoint : /profiles/
+
+METHOD:
+
+POST (/profiles/)-
+Header params JWT token.
+Body of the request should be like:
+{   
+    "user": {
+        "email": "xyz@gmail.com",
+        "first_name": "Abc",
+        "last_name": "Xyz",
+        "username": "abc.xyz",
+        "is_superuser": true,
+        "is_staff": true,
+        "password": "defgvb"
+    }
+}
+Response : Status 201 CREATED
+{
+    "id": 1, 
+    "user": {
+        "email": "xyz@gmail.com",
+        "first_name": "Abc",
+        "last_name": "Xyz",
+        "username": "abc.xyz",
+        "is_superuser": true,
+        "is_staff": true,
+    }
+}
+
+Get (/profiles/)- 
+Header params JWT token.
+Response- 
+[
+    {
+        "id": 1,
+        "user": {
+            "email": "sakthivel.e@sensiple.com",
+            "first_name": "Sakthivel",
+            "last_name": "Eka",
+            "username": "sakthivel.e",
+            "is_superuser": true,
+            "is_staff": true
+        }
+    },
+    {
+        "id": 2,
+        "user": {
+            "email": "sathish.k@sensiple.com",
+            "first_name": "Sathish",
+            "last_name": "Kumar",
+            "username": "sathish.k",
+            "is_superuser": false,
+            "is_staff": false
+        }
+    }
+]
+
+
+2.
+User API for UPDATE/Delete a Profile.
+
+endpoint - /profile/<profile-id>/
+
+METHODS :
+
+PUT method (/profile/<profile-id>)-
+Header params JWT token.
+Body: 
+{   
+    "user": {
+        "first_name": "Sathish",
+        "last_name": "Kumar",
+        "username": "sathish.kumar",
+    }
+}
+Response:
+{
+    "id": 2,
+    "user": {
+        "email": "sathish.k@sensiple.com",
+        "first_name": "Sathish",
+        "last_name": "Kumar",
+        "username": "sathish.kumar",
+        "is_superuser": false,
+        "is_staff": false
+    }
+}
+
+DELETE method (profile/<profile-id>)-
+Header params JWT token.
+Response:
+{
+    "StatusMessage": "Profile Deleted Successfully."
+}
+
+
+3. LOGIN API
+
+endpoint : (/login/)
+POST METHOD :
+Body of request- 
+{
+    "username":"abc.xyz",
+    "password":"abcdef321"
+}
+Response -
+{
+    "Status": true,
+    "StatusCode": 200,
+    "StatusMessage": "Successfully logged in",
+    "first_name": "Sakthivel",
+    "last_name": "Eka",
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InNha3RoaXZlbC5lIiwiZXhwIjoxNjEyNTE3NDkwLCJlbWFpbCI6InNha3RoaXZlbC5lQHNlbnNpcGxlLmNvbSJ9.4N1kw2JuDkn1HnalW5r_bJFl3HNnScSxkWfExnXDj_4",
+    "profile_id": 1
+}
+
+4. JWT Verify and Refresh Token API's :
+
+endpoint : (/token-verify/)
+POST Method:
+Body of request:
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InNha3RoaXZlbC5lIiwiZXhwIjoxNjEyNTE3NDkwLCJlbWFpbCI6InNha3RoaXZlbC5lQHNlbnNpcGxlLmNvbSJ9.4N1kw2JuDkn1HnalW5r_bJFl3HNnScSxkWfExnXDj_4"
+}
+Response:
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InNha3RoaXZlbC5lIiwiZXhwIjoxNjEyNTE3NDkwLCJlbWFpbCI6InNha3RoaXZlbC5lQHNlbnNpcGxlLmNvbSJ9.4N1kw2JuDkn1HnalW5r_bJFl3HNnScSxkWfExnXDj_4"
+}
+endpoint : (/refresh-token/) (Should be refreshed after token expiry - set at 10000 seconds)
+POST Method:
+Body of request:
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6InNha3RoaXZlbC5lIiwiZXhwIjoxNjEyNTE3NDkwLCJlbWFpbCI6InNha3RoaXZlbC5lQHNlbnNpcGxlLmNvbSJ9.4N1kw2JuDkn1HnalW5r_bJFl3HNnScSxkWfExnXDj_4"
+}
+Response:
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozLCJ1c2VybmFtZSI6InNhdGhpc2gua3VtYXIiLCJleHAiOjE2MTI1MTc3MDIsImVtYWlsIjoic2F0aGlzaC5rQHNlbnNpcGxlLmNvbSJ9.njC4-bIb3GoJJSraO44QDkVlUknQeSxUb_73Gl4KG_k",
+    "refreshToken": "YRjxLpsjRqL7zYuKstXogqioA_P3Z4fiEuga0NCVRcDSc8cy_9msxg"
+}
+
+
+5.
+API to view all blogs(with comments) and create new blog:
+endpoint : /blogs/
+METHODS -
+POST method (/blogs/)-
+Header params - JWT Token
+Body parameters :-
+{
+    "created_by": <profile_id>,
+    "content": <text_format content of blog>,
+    "title": <text format title for blog>,
+    "blog_file": <File Format Blog file>,
+}
+On Blog creation, Slug will be auto created based on title. If repeated title, will throw error response saying Duplicate Blog.
+
+Response :
+{
+    "sno": 7,
+    "slug": "tim-paine-is-still-in-credit-as-australia-captain",
+    "date_of_upload": "04-02-2021 06:09:48",
+    "comments": [],
+    "content": <content text>,
+    "title": "Tim Paine is still in credit as Australia captain",
+    "blog_file": "/media/blogfiles/Tim-Paine-1_kRopK2W.jpg",
+    "created_by": 2
+}
+
+GET method (/blogs/)-
+Header params - JWT Token
+Response :
+[
+    {
+        "sno": 1,
+        "slug": "injured-indians-look-stronger-than-ever-in-australia",
+        "date_of_upload": "04-02-2021 05:56:44",
+        "comments": [],
+        "content": <content body>,
+        "title": "Injured Indians look stronger than ever in Australia",
+        "blog_file": "/media/blogfiles/Pujara_TQxR64e.jpg",
+        "created_by": 1
+    },
+    {
+        "sno": 7,
+        "slug": "tim-paine-is-still-in-credit-as-australia-captain",
+        "date_of_upload": "04-02-2021 06:09:48",
+        "comments": [],
+        "content": <content body>,
+        "title": "Tim Paine is still in credit as Australia captain",
+        "blog_file": "/media/blogfiles/Tim-Paine-1_kRopK2W.jpg",
+        "created_by": 2
+    }
+]
+
+
+6.
+API for Detailed Blog Post:
+endpoint - /blogpost/<slug example: injured-indians-look-stronger-than-ever-in-australia>/
+METHODs:
+Get (/blogpost/slug/)
+Header Params : JWT Token
+Response:
+{
+    "sno": 1,
+    "slug": "injured-indians-look-stronger-than-ever-in-australia",
+    "date_of_upload": "04-02-2021 05:56:44",
+    "comments": [],
+    "content": "Many India fans must surely be worried with the long list of injured players in the current Indian squad touring Australia. This is probably the biggest injured contingent, even bigger than the contingent that was battered in the West Indies in 1976 when India had to lose a match it never contested in spirit. The situation today is such that the Indian team is likely to have only 11 fit players on the day of the Brisbane Test.\n\nThese injuries are not an indication of cowardice since India have braved the repeated bodyline attack and showed why Test cricket is undoubtedly special. The by now famous Sydney draw has overshadowed the biggest injury blow Team India has ever received, the Adelaide Test fiasco where they were looking totally lost and clueless, succumbing to a shameful 36 for 9. Surely, that day left more scars and bruises on the image of India and reaffirmed their perennial struggles overseas.\n\nFrom what looked like a certain winning position, India slid to defeat in just under a couple of hours in Adelaide. Was it over confidence? Was it lethargy? God only knows! Test cricket is played session to session and Sourav Ganguly knows this well. It only took a brief power nap for India to script a shameful history.\n\nSo shameful that even the by now infamous 42 all out at Lord’s in 1974 seems okay. It is a known fact that India, especially in recent years, has prided itself on batting strength. Sheer strength or past records are of no use when a team fails to stand up to its fans and its own expectations, that too when at a clear advantage in a crucial series opener.\n\nThey say the first impression is the best impression and this is what hurt India most in the first Test. When your openers look clueless and give the upper hand to the opponent’s bowlers in a hurry, the rest are exposed and look clueless too. As if added to these woes, both the rock solid senior batsmen Pujara and Kohli led from the front in India’s self-inflicted debacle in Adelaide.",
+    "title": "Injured Indians look stronger than ever in Australia",
+    "blog_file": "/media/blogfiles/Pujara_TQxR64e.jpg",
+    "created_by": 1
+}
+
+Put (/blogpost/slug/)
+Header params : JWT Token
+Body params :
+{
+    "sno": 1,
+    "slug": "injured-indians-look-stronger-than-ever-in-australia",
+    "content": "Some India fans must surely be worried with the long list of injured players in the current Indian squad touring Australia. This is probably the biggest injured contingent, even bigger than the contingent that was battered in the West Indies in 1976 when India had to lose a match it never contested in spirit. The situation today is such that the Indian team is likely to have only 11 fit players on the day of the Brisbane Test.\n\nThese injuries are not an indication of cowardice since India have braved the repeated bodyline attack and showed why Test cricket is undoubtedly special. The by now famous Sydney draw has overshadowed the biggest injury blow Team India has ever received, the Adelaide Test fiasco where they were looking totally lost and clueless, succumbing to a shameful 36 for 9. Surely, that day left more scars and bruises on the image of India and reaffirmed their perennial struggles overseas.\n\nFrom what looked like a certain winning position, India slid to defeat in just under a couple of hours in Adelaide. Was it over confidence? Was it lethargy? God only knows! Test cricket is played session to session and Sourav Ganguly knows this well. It only took a brief power nap for India to script a shameful history.\n\nSo shameful that even the by now infamous 42 all out at Lord’s in 1974 seems okay. It is a known fact that India, especially in recent years, has prided itself on batting strength. Sheer strength or past records are of no use when a team fails to stand up to its fans and its own expectations, that too when at a clear advantage in a crucial series opener.\n\nThey say the first impression is the best impression and this is what hurt India most in the first Test. When your openers look clueless and give the upper hand to the opponent’s bowlers in a hurry, the rest are exposed and look clueless too. As if added to these woes, both the rock solid senior batsmen Pujara and Kohli led from the front in India’s self-inflicted debacle in Adelaide.",
+    "title": "Injured Indians look stronger than ever in Australia",
+    "created_by": 1,
+    "blog_file": <file_upload>
+}
+
+Delete (/blogpost/slug/)
+Header params : JWT Token
+Response :
+{
+    "StatusMessage": "Blog Deleted Successfully."
+}
+
+7. API for viewing all blogs created by a particular user(profile id pk)
+endpoint : "/<int:pk example: 2>/blogs/"
+Get Method :
+Header params - JWT Token
+Response:
+[
+    {
+        "sno": 7,
+        "slug": "tim-paine-is-still-in-credit-as-australia-captain",
+        "date_of_upload": "04-02-2021 06:09:48",
+        "comments": [],
+        "content": "If you had told me five years ago that I’d be leaping to the defence of an Australian cricket captain I’d have called you delusional, and possibly several other words. However, here I am, in January 2021, now making a case in defence of Tim Paine following his behaviour on the final day of the third test between Australia and India at the Sydney Cricket Ground. Over the last couple of days the criticism of his behaviour has lead to calls for him to be replaced as captain and seen questions raised over his future in the side.\n\nElite sport has always been a fickle beast; when you’re winning you can do no wrong but if you’re not then in today’s modern game every detail is picked apart and analyzed for days after the event. In Paine’s case the issue has centred on his comments to Ravichandran Ashwin and how this abuse has tarnished Australia’s attempts to rebuild their image following sandpapergate in March 2018.\n\nThe Australian cricket team has always been well known for their competitive nature and finding a balance has often been tricky. When they overstepped the mark at Newlands in 2018 the entire cricketing world licked their lips as they prepared to devour the carcasses as the recriminations began. At that time, with Australian cricket literally in tatters, Paine stepped into the breach and lead the team with dignity and a reasonable level of skill.\n\nThe game has changed a lot in the aftermath of that series in 2018. With the continual improvements in technology and clearly a conscious effort to work on player behaviour, the game has become a much nicer version of the one I first encountered 30 years ago. Whilst I’m sure abuse of opponents still goes on at an amateur level the presence of stump mics and umpteen dozen cameras at every game now makes getting away with it harder than it ever was.\n\nThis improved behaviour was then brought to our screens with Amazon Prime’s brilliant docuseries ‘The Test’ that focused on the Australian team in the aftermath of that South African series. Justin Langer, the new coach, then added the infamous mantra ‘elite honesty’ which was how Paine and his team were to conduct themselves. They were to play tough but not to abuse their opponent under any circumstance.\n\nSport however is a very, very tough gig and when you throw competitors into a pressure environment not many would emerge having conducted themselves with grace and serenity. Somehow the Australian side managed to get through the entire 2019 Ashes series in England without any incidents and the abuse they received at the hands of the English public was again brought to life in The Test. To actually see the reactions of the coaching staff first hand really put it into perspective brilliantly and to hold your nerve in that environment was testament to solid leadership.",
+        "title": "Tim Paine is still in credit as Australia captain",
+        "blog_file": "http://127.0.0.1:8000/media/blogfiles/Tim-Paine-1_kRopK2W.jpg",
+        "created_by": 2
+    }
+]
+
+
+8. API for creating Blog Comment and Viewing Comments under a blog(identified by slug)
+endpoint : "blog/<str:slug>/comments/"
+METHODS :
+POST Method (blog/tim-paine-is-still-in-credit-as-australia-captain/comments/) :
+Header params - JWT Token
+Body params :
+{
+    "created_by" : 1,
+    "blog_referred" : 7,
+    "comment" : "Wow! Good article. Kudos."
+}
+Response :
+{
+    "id": 1,
+    "approved": false,
+    "date_of_comment": "04-02-2021 06:35:35",
+    "comment": "Wow! Good read. Kudos.",
+    "created_by": 1,
+    "blog_referred": 7
+}
+
+Get method (blog/tim-paine-is-still-in-credit-as-australia-captain/comments/) :
+Header params - JWT Token
+Response:
+[
+    {
+        "id": 1,
+        "approved": false,
+        "date_of_comment": "04-02-2021 06:35:35",
+        "comment": "Wow! Good read. Kudos.",
+        "created_by": 1,
+        "blog_referred": 7
+    },
+    {
+        "id": 2,
+        "approved": false,
+        "date_of_comment": "04-02-2021 06:36:36",
+        "comment": "Thank You!",
+        "created_by": 2,
+        "blog_referred": 7
+    }
+]
+
+
+9.
+API to Edit Comment and Delete Comment(by comment creater or admin)
+endpoint "blog/<str:slug>/comments/<int:comment_id>/"
+PUT Method (blog/tim-paine-is-still-in-credit-as-australia-captain/comments/1/) :
+Header params - JWT Token
+Body params :
+{
+    "id": 1,
+    "approved": true,
+    "comment": "Nice Article!!",
+    "created_by": 1,
+    "blog_referred": 7
+}
+Here only admin can change the "approved" field. It will throw error if non admin user(even comment maker) tried to change. Throws : "StatusMessage":"Only admins can approve comments."
+Also only comment maker or admin can edit the comment. Other user tries to edit throws: {"StatusMessage":"Only admins/comment maker can edit comments."}
+Response :
+{
+    "id": 1,
+    "approved": true,
+    "date_of_comment": "04-02-2021 06:35:35",
+    "comment": "Nice Article!!",
+    "created_by": 1,
+    "blog_referred": 7
+}
+
+GET Method (blog/tim-paine-is-still-in-credit-as-australia-captain/comments/2/):
+Header params - JWT Token
+Response:
+{
+    "id": 2,
+    "approved": true,
+    "date_of_comment": "04-02-2021 06:36:36",
+    "comment": "Thank You....",
+    "created_by": 2,
+    "blog_referred": 7
+}
+
+
+10. 
+API to list all the comments(of all blogs) for Admin approval purpose: 
+endpoint "comments/all/":
+Get method:
+Header params - JWT Token
+Response:
+[
+    {
+        "id": 1,
+        "approved": true,
+        "date_of_comment": "04-02-2021 06:35:35",
+        "comment": "Nice Article!!",
+        "created_by": 1,
+        "blog_referred": 7
+    },
+    {
+        "id": 2,
+        "approved": true,
+        "date_of_comment": "04-02-2021 06:36:36",
+        "comment": "Thank You....",
+        "created_by": 2,
+        "blog_referred": 7
+    },
+    {
+        "id": 3,
+        "approved": false,
+        "date_of_comment": "04-02-2021 07:00:14",
+        "comment": "Good article!!",
+        "created_by": 2,
+        "blog_referred": 1
+    }
+]
